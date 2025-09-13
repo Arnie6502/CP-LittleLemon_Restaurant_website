@@ -1,0 +1,32 @@
+{% load static %}
+<header>
+    <!-- Logo and Cart on Same Line -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;">
+        
+        <!-- Logo Only (Left Side) -->
+        <div>
+            <img src="{% static 'img/logo.png' %}" alt="Little Lemon Logo" style="height: 100px; width: auto;" />
+        </div>
+        
+        <!-- Cart (Right Side) -->
+        <div>
+            <a href="{% url 'view_cart' %}" style="background: #f4ce14; color: #495e57; padding: 0.75rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: bold;">
+                🛒 Cart
+                {% if cart_count > 0 %}
+                    <span style="background: #ff6b6b; color: white; border-radius: 50%; padding: 0.2rem 0.5rem; font-size: 0.9rem; margin-left: 0.5rem;">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav style="background: #3a4a47; padding: 0 2rem;">
+        <ul style="display: flex; list-style: none; gap: 0; margin: 0; padding: 0;">
+            <li><a href="{% url 'home' %}" style="color: #f4ce14; font-size: 22px; margin-right: 1.5rem; text-align: center;">Home</a></li>
+            <li><a href="{% url 'about' %}" style="color: #f4ce14; font-size: 22px; margin-right: 1.5rem; text-align: center;">About</a></li>
+            <li><a href="{% url 'menu' %}" style="color: #f4ce14; font-size: 22px; margin-right: 1.5rem; text-align: center;">Menu</a></li>
+            <li><a href="{% url 'book' %}" style="color: #f4ce14; font-size: 22px; margin-right: 1.5rem; text-align: center;">Book</a></li>
+            <li><a href="{% url 'reservations' %}" style="color: #f4ce14; font-size: 22px; margin-right: 1.5rem; text-align: center;">Reservations</a></li>
+        </ul>
+    </nav>
+</header>

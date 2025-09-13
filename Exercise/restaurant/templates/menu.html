@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+    <article>
+        <h1>Menu</h1>
+        <div class="row">
+            {% for item in menu %}
+            <div class="column">
+                 <div class="menu-item">
+                    <h2 name="{{ item.name }}">{{ item.name }}</h2>
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" style="width: 100%; max-width: 300px; height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 100%; max-width: 300px; height: 200px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                            <span>No Image</span>
+                        </div>
+                    {% endif %}
+                    <h3>{{ item.name }}</h3>
+                    {% if item.description %}
+                        <p class="description">{{ item.description }}</p>
+                    {% endif %}
+                    <p class="price">${{ item.price }}</p>
+                  <p>Available: {{ item.inventory }}</p>
+                    
+                    {% if item.inventory > 0 %}
+                        <form method="post" action="{% url 'add_to_cart' item.id %}" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <div class="quantity-selector">
+                                <label for="quantity-{{ item.id }}">Quantity:</label>
+                                <input type="number" id="quantity-{{ item.id }}" name="quantity" value="1" min="1" max="{{ item.inventory }}">
+                            </div>
+                            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                        </form>
+                    {% else %}
+                        <button class="btn-out-of-stock" disabled>Out of Stock</button>
+                    {% endif %}
+                    
+                    <a href="{% url 'menu_item' pk=item.id %}">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+
+<style>
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.menu-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    text-align: center;
+    background: white;
+}
+
+.menu-item img {
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.menu-item h3 {
+    color: #333;
+    margin: 10px 0;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f4ce14;
+}
+
+.description {
+    color: #666;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.add-to-cart-form {
+    margin: 15px 0;
+}
+
+.quantity-selector {
+    margin: 10px 0;
+}
+
+.quantity-selector label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.quantity-selector input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.btn-add-to-cart {
+    background: #f4ce14;
+    color: #495e57;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.btn-add-to-cart:hover {
+    background: #495e57;
+    color: #f4ce14;
+}
+
+.btn-out-of-stock {
+    background: #ccc;
+    color: #666;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: not-allowed;
+    margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+    
+    .column {
+        min-width: auto;
+    }
+}
+</style>
+{% endblock %}
